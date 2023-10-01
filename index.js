@@ -1,4 +1,5 @@
 // TODO: Include packages needed for this application
+const fs = require("fs")
 const inquirer = require('inquirer');
 const generateMd = require("./utils/generateMarkdown");
 // TODO: Create an array of questions for user input
@@ -22,7 +23,10 @@ function init() {
     .prompt(questions)
     .then((answers) => {
       // Use user feedback for... whatever!!
-      console.log(generateMd(answers))
+      const markdown = generateMd(answers)
+      fs.writeFile("./README.md", markdown, error => {
+        if (error) {console.error("error writing README.md", error)}
+      })
     })
     .catch((error) => {
       if (error.isTtyError) {
